@@ -57,7 +57,6 @@ class rsa_encryptor:
 
     def lamdaN(self):
         lmd = lcm(self.p-1, self.q-1)
-        print(f"LMD: {lmd}")
         return lmd
     
     def calculate_d(self):
@@ -100,7 +99,7 @@ class rsa_cracker: # A lot of the functions are reused from the encryptor, but I
         if print_message:
             print(f"Message in ASCII code: {[ord(char) for char in self.m]}", file=sys.stderr)
             print("", file=sys.stderr)
-        int_message = [pow(ord(char), self.e, self.n) for char in self.m]
+        int_message = [pow(ord(char), self.d, self.n) for char in self.m]
 
 
         if print_message:
@@ -138,7 +137,6 @@ class rsa_cracker: # A lot of the functions are reused from the encryptor, but I
     
     def lamdaN(self):
         lmd = lcm(self.p-1, self.q-1)
-        print(f"LMD: {lmd}")
         return lmd
     
     def calculate_d(self):

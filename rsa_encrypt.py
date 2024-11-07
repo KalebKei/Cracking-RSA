@@ -6,4 +6,3 @@ e, n = map(int, input().split())
 
 alg = rsa.rsa_encryptor(message, e, n)
 alg.encrypt(print_message=True)
-print("\n")
