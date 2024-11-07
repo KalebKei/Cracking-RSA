@@ -13,17 +13,19 @@ class rsa:
             self.n = 77
         else:
             self.n = n
+        self.findpq()
+        self.calculate_d()
 
     def encrypt(self, print_message=True):
         # Encrypt the message using the public key
-        self.calculate_d()
-        self.findpq()
         if print_message:
-            print(f"Message: {self.m}", file=sys.stderr)
+            print(f"Message in ASCII code: {[ord(char) for char in self.m]}", file=sys.stderr)
+            print("", file=sys.stderr)
         encrypted_message = [pow(ord(char), self.e, self.n) for char in self.m]
 
+
         if(print_message):
-            print(f"Encrypted message: {encrypted_message}", file=sys.stderr)
+            print(f"Message encoded {encrypted_message}", file=sys.stderr)
             print("".join(chr(num) for num in encrypted_message))
         
         self.encrypted_message = encrypted_message
@@ -38,10 +40,9 @@ class rsa:
         # Prime factorization of n
         factors = self.prime_factors(self.n)
         if len(factors) == 2:
-            self.p, self.q = factors
-            print(f"Prime number P: {self.p}\nPrime number Q: {self.q}", file=sys.stderr)
-            print(f"Public key (e): {self.e}", file=sys.stderr)
-            print(f"Private key: {self.d}", file=sys.stderr)
+            self.q, self.p = factors
+            print(f"Prime number P: {self.p}\nPrime number q: {self.q}", file=sys.stderr)
+            print(f"Public Key (e): {self.e}", file=sys.stderr)
         else:
             raise ValueError("n is not a product of two primes")
         return self
@@ -60,15 +61,21 @@ class rsa:
         return factors
 
     def lamdaN(self):
+
         lmd = lcm(self.p-1, self.q-1)
-        # print(f"LMD: {lmd}")
+        print(f"LMD: {lmd}")
         return lmd
     
     def calculate_d(self):
         # Calculate d such that (e * d) % lambda_n == 1
         lambda_n = self.lamdaN()
-        d = pow(self.e, -1, int(lambda_n))
-        self.d = d
+        for d in range(1, n):
+            if (self.e * d) % lambda_n == 1:
+                self.d = d
+                break
+        print(f"Private Key: {self.d}", file=sys.stderr)
+        print(f"n: {self.n}", file=sys.stderr)
+        print(f"Phi of n: {2 * lambda_n}", file=sys.stderr)
         return self
 
 
