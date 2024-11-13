@@ -104,6 +104,9 @@ class rsa_cracker: # A lot of the functions are reused from the encryptor, but I
 
         if print_message:
             print(f"Message decoded {int_message}", file=sys.stderr)
+            print(f"Prime numbers: {self.p}, {self.q}")
+            print(f"Private key: {self.d}")
+            print(f"Unencrypted message:")
             print("".join(chr(num) for num in int_message))
         
         self.int_message = int_message
